@@ -67,6 +67,8 @@ class SortedLinkedListTest {
             "The result elements contains unexpected '%s'.".formatted(resultElement)));
     }
 
+    // TODO: add test for adding already existing element(s)
+
     @Test
     void toListIsImmutable() {
         SortedLinkedList sortedList = createSampleSortedList();
@@ -76,6 +78,30 @@ class SortedLinkedListTest {
         List<Integer> listAfterAdd = sortedList.toList();
         Assertions.assertFalse(listAfterAdd.contains(newElement), ("The original sorted list shouldn't contain element "
             + "'%s' added to the List produced by toList() method.").formatted(newElement));
+    }
+
+    @Test
+    void addIntegerKeepsListSorted() {
+        var list = new SortedLinkedList();
+        list.add(1);
+        list.add(3);
+        Assertions.assertEquals(1, list.get(0));
+        Assertions.assertEquals(3, list.get(1));
+        list.add(2);
+        Assertions.assertEquals(1, list.get(0));
+        Assertions.assertEquals(2, list.get(1));
+        Assertions.assertEquals(3, list.get(2));
+        list.add(-1);
+        Assertions.assertEquals(-1, list.get(0));
+        Assertions.assertEquals(1, list.get(1));
+        Assertions.assertEquals(2, list.get(2));
+        Assertions.assertEquals(3, list.get(3));
+        list.add(Integer.MAX_VALUE);
+        Assertions.assertEquals(-1, list.get(0));
+        Assertions.assertEquals(1, list.get(1));
+        Assertions.assertEquals(2, list.get(2));
+        Assertions.assertEquals(3, list.get(3));
+        Assertions.assertEquals(Integer.MAX_VALUE, list.get(4));
     }
 
     private static SortedLinkedList createSampleSortedList() {

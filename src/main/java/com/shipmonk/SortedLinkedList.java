@@ -25,7 +25,14 @@ public class SortedLinkedList {
         if (newElement == null) {
             throw new IllegalArgumentException("Element being added to the list must be NOT null.");
         }
-        list.add(newElement);
+        int index = 0;
+        while (index < list.size()) {
+            if (newElement.compareTo(list.get(index)) < 0) {
+                break;
+            }
+            index++;
+        }
+        list.add(index, newElement);
     }
 
     /**
