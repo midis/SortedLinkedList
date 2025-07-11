@@ -32,7 +32,14 @@ public class SortedLinkedList {
      * @param index of the element in the list to be returned (starting by 0)
      * @return element on the specified position (index) in the list
      */
-    public int get(final int index) {
+    public Integer get(final int index) {
         return list.get(index);
+    }
+
+    /**
+     * @return new List instance containing all elements
+     */
+    public List<Integer> toList() {
+        return new LinkedList<>(list);
     }
 }
