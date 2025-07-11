@@ -130,7 +130,7 @@ class SortedLinkedListTest {
     }
 
     @Test
-    void removeOneUniqueOfMultipleElements() {
+    void removeByIndexOneUniqueOfMultipleElements() {
         SortedLinkedList<Integer> list = new SortedLinkedList<>();
         list.add(1);
         list.add(2);
@@ -142,7 +142,7 @@ class SortedLinkedListTest {
     }
 
     @Test
-    void removeOneDuplicateOfMultipleElements() {
+    void removeByIndexOneDuplicateOfMultipleElements() {
         SortedLinkedList<Integer> list = new SortedLinkedList<>();
         list.add(1);
         list.add(2);
@@ -153,6 +153,30 @@ class SortedLinkedListTest {
         Integer removed = list.remove(2);
         Assertions.assertEquals(2, removed);
         assertListContent(List.of(1, 2, 2, 3), list);
+    }
+
+    @Test
+    void removeByValueOneUniqueOfMultipleElements() {
+        SortedLinkedList<String> list = new SortedLinkedList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        assertListContent(List.of("a", "b", "c"), list);
+        boolean result = list.remove("b");
+        Assertions.assertTrue(result, "The element to be removed wasn't found in the list '%s'.".formatted(list));
+        assertListContent(List.of("a", "c"), list);
+    }
+
+    @Test
+    void removeByValueNonExistingElement() {
+        SortedLinkedList<String> list = new SortedLinkedList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        assertListContent(List.of("a", "b", "c"), list);
+        boolean result = list.remove("x");
+        Assertions.assertFalse(result, "The result of remove() is expected false when element is not found in list");
+        assertListContent(List.of("a", "b", "c"), list);
     }
 
     private static <T extends Comparable<T>> void assertListContent(List<T> expectedElements, SortedLinkedList<T> list) {

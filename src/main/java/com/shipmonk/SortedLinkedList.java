@@ -63,6 +63,17 @@ public class SortedLinkedList<E extends Comparable<E>> {
     }
 
     /**
+     * Delegates to the {@link List#remove(Object)} so see it for more details.
+     *
+     * @see List#remove(Object)
+     * @param element element to be removed from this list, if present
+     * @return {@code true} if this list contained the specified element
+     */
+    public boolean remove(E element) {
+        return list.remove(element);
+    }
+
+    /**
      * @return new List instance containing all elements
      */
     public List<E> toList() {
