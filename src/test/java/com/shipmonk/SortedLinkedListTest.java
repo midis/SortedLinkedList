@@ -67,8 +67,6 @@ class SortedLinkedListTest {
             "The result elements contains unexpected '%s'.".formatted(resultElement)));
     }
 
-    // TODO: add test for adding already existing element(s)
-
     @Test
     void toListIsImmutable() {
         SortedLinkedList sortedList = createSampleSortedList();
@@ -85,23 +83,28 @@ class SortedLinkedListTest {
         var list = new SortedLinkedList();
         list.add(1);
         list.add(3);
-        Assertions.assertEquals(1, list.get(0));
-        Assertions.assertEquals(3, list.get(1));
+        assertListContent(List.of(1, 3), list);
         list.add(2);
-        Assertions.assertEquals(1, list.get(0));
-        Assertions.assertEquals(2, list.get(1));
-        Assertions.assertEquals(3, list.get(2));
+        assertListContent(List.of(1, 2, 3), list);
         list.add(-1);
-        Assertions.assertEquals(-1, list.get(0));
-        Assertions.assertEquals(1, list.get(1));
-        Assertions.assertEquals(2, list.get(2));
-        Assertions.assertEquals(3, list.get(3));
+        assertListContent(List.of(-1, 1, 2, 3), list);
         list.add(Integer.MAX_VALUE);
-        Assertions.assertEquals(-1, list.get(0));
-        Assertions.assertEquals(1, list.get(1));
-        Assertions.assertEquals(2, list.get(2));
-        Assertions.assertEquals(3, list.get(3));
-        Assertions.assertEquals(Integer.MAX_VALUE, list.get(4));
+        assertListContent(List.of(-1, 1, 2, 3, Integer.MAX_VALUE), list);
+        list.add(2);
+        assertListContent(List.of(-1, 1, 2, 2, 3, Integer.MAX_VALUE), list);
+    }
+
+    private static void assertListContent(List<Integer> expectedElements, SortedLinkedList list) {
+        Assertions.assertEquals(expectedElements.size(), list.size(), "List size doesn't match.");
+        for (int i = 0; i < list.size(); i++) {
+            final Integer actualElement = list.get(i);
+            final Integer expectedElement = expectedElements.get(i);
+            Assertions.assertEquals(
+                expectedElement,
+                actualElement,
+                "List element '%s' on position %d doesn't match the expected element '%s'."
+                    .formatted(actualElement, i, expectedElement));
+        }
     }
 
     private static SortedLinkedList createSampleSortedList() {

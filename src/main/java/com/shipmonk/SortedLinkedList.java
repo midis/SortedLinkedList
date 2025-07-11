@@ -18,6 +18,10 @@ public class SortedLinkedList {
     }
 
     /**
+     * Adds a new element to the list while keeping it sorted.
+     * The order is decided by the standard (ascending) comparison using {@link Comparable#compareTo(Object)},
+     * so for instance adding '2' to the existing list of {'1', '3'} results in list {'1', '2', '3'}.
+     *
      * @param newElement element which is to be added to the list
      * @throws IllegalArgumentException when the element being added is {@code null}
      */
