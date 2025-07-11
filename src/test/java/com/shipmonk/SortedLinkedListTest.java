@@ -119,6 +119,42 @@ class SortedLinkedListTest {
         assertListContent(List.of("", "  text prefixed with space", "a", "b", "c", "some longer text"), list);
     }
 
+    @Test
+    void removeTheOnlyElement() {
+        SortedLinkedList<Integer> list = new SortedLinkedList<>();
+        list.add(1);
+        assertListContent(List.of(1), list);
+        Integer removed = list.remove(0);
+        Assertions.assertEquals(1, removed);
+        assertListContent(List.of(), list);
+    }
+
+    @Test
+    void removeOneUniqueOfMultipleElements() {
+        SortedLinkedList<Integer> list = new SortedLinkedList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        assertListContent(List.of(1, 2, 3), list);
+        Integer removed = list.remove(1);
+        Assertions.assertEquals(2, removed);
+        assertListContent(List.of(1, 3), list);
+    }
+
+    @Test
+    void removeOneDuplicateOfMultipleElements() {
+        SortedLinkedList<Integer> list = new SortedLinkedList<>();
+        list.add(1);
+        list.add(2);
+        list.add(2);
+        list.add(2);
+        list.add(3);
+        assertListContent(List.of(1, 2, 2, 2, 3), list);
+        Integer removed = list.remove(2);
+        Assertions.assertEquals(2, removed);
+        assertListContent(List.of(1, 2, 2, 3), list);
+    }
+
     private static <T extends Comparable<T>> void assertListContent(List<T> expectedElements, SortedLinkedList<T> list) {
         Assertions.assertEquals(expectedElements.size(), list.size(), "List size doesn't match.");
         for (int i = 0; i < list.size(); i++) {

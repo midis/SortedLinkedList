@@ -52,6 +52,17 @@ public class SortedLinkedList<E extends Comparable<E>> {
     }
 
     /**
+     * Delegates to the {@link List#remove(int)} so see it for more details.
+     *
+     * @see List#remove(int)
+     * @param index the index of the element to be removed
+     * @return the element previously at the specified position
+     */
+    public E remove(int index) {
+        return list.remove(index);
+    }
+
+    /**
      * @return new List instance containing all elements
      */
     public List<E> toList() {
