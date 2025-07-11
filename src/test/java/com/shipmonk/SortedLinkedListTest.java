@@ -11,21 +11,30 @@ class SortedLinkedListTest {
 
     @Test
     void constructorCreatesInstance() {
-        var list = new SortedLinkedList();
+        var list = new SortedLinkedList<Integer>();
         Assertions.assertNotNull(list);
         Assertions.assertInstanceOf(SortedLinkedList.class, list);
     }
 
     @Test
     void newEmptyListHasZeroSize() {
-        SortedLinkedList list = new SortedLinkedList();
+        SortedLinkedList<Integer> list = new SortedLinkedList<>();
         Assertions.assertEquals(0, list.size());
     }
 
     @ParameterizedTest
     @ValueSource(ints = {0, 1, 11, Integer.MAX_VALUE, -1, -111, Integer.MIN_VALUE})
     void addOneIntegerToEmptyListUpdatesSizeAndGetReturnsIt(int value) {
-        SortedLinkedList list = new SortedLinkedList();
+        SortedLinkedList<Integer> list = new SortedLinkedList<>();
+        list.add(value);
+        Assertions.assertEquals(1, list.size());
+        Assertions.assertEquals(value, list.get(0));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"", "a", "b", "c", "abc", "A", "test text"})
+    void addOneStringToEmptyListUpdatesSizeAndGetReturnsIt(String value) {
+        SortedLinkedList<String> list = new SortedLinkedList<>();
         list.add(value);
         Assertions.assertEquals(1, list.size());
         Assertions.assertEquals(value, list.get(0));
@@ -33,14 +42,14 @@ class SortedLinkedListTest {
 
     @Test
     void addWithNullValueThrowsException() {
-        SortedLinkedList list = new SortedLinkedList();
+        SortedLinkedList<Integer> list = new SortedLinkedList<>();
         Assertions.assertThrows(IllegalArgumentException.class, () -> list.add(null));
     }
 
     @Test
     void addSeveralIntegerElements() {
-        SortedLinkedList list = new SortedLinkedList();
-        final List<Integer> elementsToAdd = getSampleListOfElements();
+        SortedLinkedList<Integer> list = new SortedLinkedList<>();
+        final List<Integer> elementsToAdd = getSampleListOfIntegerElements();
         for (int i = 0; i < elementsToAdd.size(); i++) {
             final Integer newElement = elementsToAdd.get(i);
             final int expectedSize = i + 1;
@@ -55,8 +64,8 @@ class SortedLinkedListTest {
 
     @Test
     void toListContainsAllElements() {
-        SortedLinkedList list = new SortedLinkedList();
-        final List<Integer> elementsToAdd = getSampleListOfElements();
+        SortedLinkedList<Integer> list = new SortedLinkedList<>();
+        final List<Integer> elementsToAdd = getSampleListOfIntegerElements();
         elementsToAdd.forEach(list::add);
         List<Integer> resultElements = list.toList();
         Assertions.assertEquals(elementsToAdd.size(), resultElements.size(),
@@ -69,7 +78,7 @@ class SortedLinkedListTest {
 
     @Test
     void toListIsImmutable() {
-        SortedLinkedList sortedList = createSampleSortedList();
+        SortedLinkedList<Integer> sortedList = createSampleSortedIntegerList();
         List<Integer> listBeforeAdd = sortedList.toList();
         final int newElement = 999;
         listBeforeAdd.add(newElement);
@@ -80,7 +89,7 @@ class SortedLinkedListTest {
 
     @Test
     void addIntegerKeepsListSorted() {
-        var list = new SortedLinkedList();
+        SortedLinkedList<Integer> list = new SortedLinkedList<>();
         list.add(1);
         list.add(3);
         assertListContent(List.of(1, 3), list);
@@ -94,11 +103,27 @@ class SortedLinkedListTest {
         assertListContent(List.of(-1, 1, 2, 2, 3, Integer.MAX_VALUE), list);
     }
 
-    private static void assertListContent(List<Integer> expectedElements, SortedLinkedList list) {
+    @Test
+    void addStringKeepsListSorted() {
+        SortedLinkedList<String> list = new SortedLinkedList<>();
+        list.add("");
+        list.add("a");
+        assertListContent(List.of("", "a"), list);
+        list.add("c");
+        assertListContent(List.of("", "a", "c"), list);
+        list.add("b");
+        assertListContent(List.of("", "a", "b", "c"), list);
+        list.add("some longer text");
+        assertListContent(List.of("", "a", "b", "c", "some longer text"), list);
+        list.add("  text prefixed with space");
+        assertListContent(List.of("", "  text prefixed with space", "a", "b", "c", "some longer text"), list);
+    }
+
+    private static <T extends Comparable<T>> void assertListContent(List<T> expectedElements, SortedLinkedList<T> list) {
         Assertions.assertEquals(expectedElements.size(), list.size(), "List size doesn't match.");
         for (int i = 0; i < list.size(); i++) {
-            final Integer actualElement = list.get(i);
-            final Integer expectedElement = expectedElements.get(i);
+            final T actualElement = list.get(i);
+            final T expectedElement = expectedElements.get(i);
             Assertions.assertEquals(
                 expectedElement,
                 actualElement,
@@ -107,14 +132,13 @@ class SortedLinkedListTest {
         }
     }
 
-    private static SortedLinkedList createSampleSortedList() {
-        SortedLinkedList sortedList = new SortedLinkedList();
-        final List<Integer> elementsToAdd = getSampleListOfElements();
-        elementsToAdd.forEach(sortedList::add);
+    private static SortedLinkedList<Integer> createSampleSortedIntegerList() {
+        SortedLinkedList<Integer> sortedList = new SortedLinkedList<>();
+        getSampleListOfIntegerElements().forEach(sortedList::add);
         return sortedList;
     }
 
-    private static List<Integer> getSampleListOfElements() {
+    private static List<Integer> getSampleListOfIntegerElements() {
         return List.of(0, 1, 11, Integer.MAX_VALUE, -1, -111, Integer.MIN_VALUE);
     }
 }
