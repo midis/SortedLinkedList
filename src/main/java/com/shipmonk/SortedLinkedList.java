@@ -19,8 +19,12 @@ public class SortedLinkedList {
 
     /**
      * @param newElement element which is to be added to the list
+     * @throws IllegalArgumentException when the element being added is {@code null}
      */
-    public void add(final int newElement) {
+    public void add(final Integer newElement) {
+        if (newElement == null) {
+            throw new IllegalArgumentException("Element being added to the list must be NOT null.");
+        }
         list.add(newElement);
     }
 

@@ -28,4 +28,10 @@ class SortedLinkedListTest {
         Assertions.assertEquals(1, list.size());
         Assertions.assertEquals(value, list.get(0));
     }
+
+    @Test
+    void addWithNullValueThrowsException() {
+        SortedLinkedList list = new SortedLinkedList();
+        Assertions.assertThrows(IllegalArgumentException.class, () -> list.add(null));
+    }
 }
