@@ -11,4 +11,10 @@ class SortedLinkedListTest {
         Assertions.assertNotNull(list);
         Assertions.assertInstanceOf(SortedLinkedList.class, list);
     }
+
+    @Test
+    void newEmptyListHasZeroSize() {
+        SortedLinkedList list = new SortedLinkedList();
+        Assertions.assertEquals(0, list.size());
+    }
 }
